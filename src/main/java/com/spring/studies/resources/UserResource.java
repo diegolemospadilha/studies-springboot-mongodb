@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.spring.studies.domain.User;
+import com.spring.studies.dto.UserDTO;
 import com.spring.studies.services.UserService;
 
 @RestController
@@ -20,9 +20,9 @@ public class UserResource {
 	UserService service;
 
 	@GetMapping
-	public ResponseEntity<List<User>> findAll() {
+	public ResponseEntity<List<UserDTO>> findAll() {
 
-		List<User> users = service.findAll();
+		List<UserDTO> users = service.findAll();
 
 		return ResponseEntity.ok(users);
 	}
