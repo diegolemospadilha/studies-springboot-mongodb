@@ -14,18 +14,27 @@ import com.spring.studies.services.exception.ObjectNotFoundException;
 
 @Service
 public class UserService {
-	
+
 	@Autowired
 	UserRepository repository;
-	
-	public List<UserDTO> findAll(){
+
+	public List<UserDTO> findAll() {
 		List<User> users = repository.findAll();
 		return users.stream().map(model -> new UserDTO(model)).collect(Collectors.toList());
 	}
-	
+
 	public User findById(String id) {
 		Optional<User> model = repository.findById(id);
 		return model.orElseThrow(() -> new ObjectNotFoundException(
 				"Usuário não encontrado! Id: " + id + ", Tipo: " + User.class.getName()));
+	}
+
+	public User insert(User obj) {
+		return repository.insert(obj);
+
+	}
+
+	public User fromDTO(UserDTO objDTO) {
+		return new User(objDTO.getId(), objDTO.getName(), objDTO.getEmail());
 	}
 }
