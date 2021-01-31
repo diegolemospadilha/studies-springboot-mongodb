@@ -8,9 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.spring.studies.domain.Post;
-import com.spring.studies.domain.User;
 import com.spring.studies.dto.PostDTO;
-import com.spring.studies.dto.UserDTO;
 import com.spring.studies.repository.PostRepository;
 import com.spring.studies.services.exception.ObjectNotFoundException;
 
@@ -55,8 +53,6 @@ public class PostService {
 	}
 
 	public Post fromDTO(PostDTO objDTO) {
-		UserDTO userDTO = objDTO.getAuthor();
-		return new Post(objDTO.getId(), objDTO.getDate(), objDTO.getTitle(), objDTO.getBody(),
-				new User(userDTO.getId(), userDTO.getName(), userDTO.getEmail()));
+		return new Post(objDTO.getId(), objDTO.getDate(), objDTO.getTitle(), objDTO.getBody(), objDTO.getAuthor());
 	}
 }

@@ -35,13 +35,14 @@ public class PostDTO implements Serializable {
 	
 	private String body;
 	
-	private UserDTO author;
+	private AuthorDTO author;
 	
 	public PostDTO(Post model) {
 		id = model.getId();
 		date = model.getDate();
 		title = model.getTitle();
 		body = model.getBody();
+		author = model.getAuthor();
 	}	
 	
 }

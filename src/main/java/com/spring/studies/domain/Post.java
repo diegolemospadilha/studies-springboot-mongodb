@@ -6,6 +6,8 @@ import java.time.LocalDateTime;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.spring.studies.dto.AuthorDTO;
+
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -33,6 +35,6 @@ public class Post implements Serializable {
 	
 	private String body;
 	
-	private User author;
+	private AuthorDTO author;
 	
 }
