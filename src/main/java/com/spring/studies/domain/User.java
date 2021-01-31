@@ -32,7 +32,7 @@ public class User implements Serializable {
 	private String email;
 	
 	@DBRef(lazy = true) 
-	private List<Post> post = new ArrayList<Post>();
+	private List<Post> posts = new ArrayList<Post>();
 	
 	public User(String id,String name, String email) {
 		this.id = id;
