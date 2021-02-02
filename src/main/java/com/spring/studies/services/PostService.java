@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,10 +19,13 @@ public class PostService {
 
 	@Autowired
 	PostRepository repository;
+	
+	@Autowired
+    private ModelMapper modelMapper;
 
 	public List<PostDTO> findAll() {
 		List<Post> posts = repository.findAll();
-		return posts.stream().map(model -> new PostDTO(model)).collect(Collectors.toList());
+		return posts.stream().map(this:: fromModel).collect(Collectors.toList());
 	}
 
 	public Post findById(String id) {
@@ -32,13 +36,13 @@ public class PostService {
 	
 	public List<PostDTO> findByTitle(String title) {
 		List<Post> posts = repository.findByTitleContainingIgnoreCase(title);
-		return posts.stream().map(model -> new PostDTO(model)).collect(Collectors.toList());
+		return posts.stream().map(this:: fromModel).collect(Collectors.toList());
 	}
 	
 	public List<PostDTO> fullSearch(String text, LocalDateTime minDate,  LocalDateTime maxDate){
 		maxDate = maxDate.plusDays(1);
 		List<Post> posts = repository.fullSearch(text, minDate, maxDate);
-		return posts.stream().map(model -> new PostDTO(model)).collect(Collectors.toList());
+		return posts.stream().map(this:: fromModel).collect(Collectors.toList());
 	}
 
 	public Post insert(Post obj) {
@@ -65,6 +69,10 @@ public class PostService {
 	}
 
 	public Post fromDTO(PostDTO objDTO) {
-		return new Post(objDTO.getId(), objDTO.getDate(), objDTO.getTitle(), objDTO.getBody(), objDTO.getAuthor());
+		return this.modelMapper.map(objDTO, Post.class);
+	}
+	
+	public PostDTO fromModel(Post model) {
+		return this.modelMapper.map(model, PostDTO.class);
 	}
 }

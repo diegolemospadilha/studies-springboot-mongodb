@@ -40,7 +40,8 @@ public class PostResource {
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<PostDTO> findById(@PathVariable String id) {
 		Post post = service.findById(id);
-		return ResponseEntity.ok(new PostDTO(post));
+		PostDTO postDTO = service.fromModel(post);
+		return ResponseEntity.ok(postDTO);
 	}
 
 	@GetMapping(value = "/titlesearch")

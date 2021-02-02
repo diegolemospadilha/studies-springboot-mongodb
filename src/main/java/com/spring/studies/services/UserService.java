@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,10 +18,13 @@ public class UserService {
 
 	@Autowired
 	UserRepository repository;
+	
+	@Autowired
+    private ModelMapper modelMapper;
 
 	public List<UserDTO> findAll() {
 		List<User> users = repository.findAll();
-		return users.stream().map(model -> new UserDTO(model)).collect(Collectors.toList());
+		return users.stream().map(this::fromModel).collect(Collectors.toList());
 	}
 
 	public User findById(String id) {
@@ -51,6 +55,10 @@ public class UserService {
 	}
 
 	public User fromDTO(UserDTO objDTO) {
-		return new User(objDTO.getId(), objDTO.getName(), objDTO.getEmail());
+		return this.modelMapper.map(objDTO, User.class);
+	}
+	
+	public UserDTO fromModel(User model) {
+		return this.modelMapper.map(model, UserDTO.class);
 	}
 }
