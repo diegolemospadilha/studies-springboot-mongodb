@@ -28,6 +28,11 @@ public class PostService {
 		return model.orElseThrow(() -> new ObjectNotFoundException(
 				"Post não encontrado! Id: " + id + ", Tipo: " + Post.class.getName()));
 	}
+	
+	public List<PostDTO> findByTitle(String title) {
+		List<Post> posts = repository.findByTitleContainingIgnoreCase(title);
+		return posts.stream().map(model -> new PostDTO(model)).collect(Collectors.toList());
+	}
 
 	public Post insert(Post obj) {
 		return repository.insert(obj);

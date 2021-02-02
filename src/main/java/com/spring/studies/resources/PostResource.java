@@ -4,6 +4,7 @@ package com.spring.studies.resources;
 import java.net.URI;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -13,11 +14,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.spring.studies.domain.Post;
 import com.spring.studies.dto.PostDTO;
+import com.spring.studies.resources.util.URL;
 import com.spring.studies.services.PostService;
 
 @RestController
@@ -29,16 +32,24 @@ public class PostResource {
 
 	@GetMapping
 	public ResponseEntity<List<PostDTO>> findAll() {
-		List<PostDTO> Posts = service.findAll();
-		return ResponseEntity.ok(Posts);
+		List<PostDTO> posts = service.findAll();
+		return ResponseEntity.ok(posts);
 	}
-	
+
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<PostDTO> findById(@PathVariable String id) {
-		Post Post = service.findById(id);
-		return ResponseEntity.ok(new PostDTO(Post));
+		Post post = service.findById(id);
+		return ResponseEntity.ok(new PostDTO(post));
 	}
-	
+
+	@GetMapping(value = "/titlesearch")
+	public ResponseEntity<List<PostDTO>> findByTitle(
+			@RequestParam(value = "text", defaultValue = StringUtils.EMPTY) String text) {
+		text = URL.decodeParam(text);
+		List<PostDTO> posts = service.findByTitle(text);
+		return ResponseEntity.ok().body(posts);
+	}
+
 	@PostMapping
 	public ResponseEntity<PostDTO> insert(@RequestBody PostDTO objDto) {
 		Post obj = service.fromDTO(objDto);
@@ -46,13 +57,13 @@ public class PostResource {
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).build();
 	}
-	
+
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> delete(@PathVariable String id) {
 		service.delete(id);
 		return ResponseEntity.noContent().build();
 	}
-	
+
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<Void> update(@RequestBody PostDTO objDto, @PathVariable String id) {
 		Post obj = service.fromDTO(objDto);
