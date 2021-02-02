@@ -1,5 +1,6 @@
 package com.spring.studies.services;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -31,6 +32,12 @@ public class PostService {
 	
 	public List<PostDTO> findByTitle(String title) {
 		List<Post> posts = repository.findByTitleContainingIgnoreCase(title);
+		return posts.stream().map(model -> new PostDTO(model)).collect(Collectors.toList());
+	}
+	
+	public List<PostDTO> fullSearch(String text, LocalDateTime minDate,  LocalDateTime maxDate){
+		maxDate = maxDate.plusDays(1);
+		List<Post> posts = repository.fullSearch(text, minDate, maxDate);
 		return posts.stream().map(model -> new PostDTO(model)).collect(Collectors.toList());
 	}
 

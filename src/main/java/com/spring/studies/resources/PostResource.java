@@ -2,6 +2,7 @@
 package com.spring.studies.resources;
 
 import java.net.URI;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -47,6 +48,19 @@ public class PostResource {
 			@RequestParam(value = "text", defaultValue = StringUtils.EMPTY) String text) {
 		text = URL.decodeParam(text);
 		List<PostDTO> posts = service.findByTitle(text);
+		return ResponseEntity.ok().body(posts);
+	}
+	
+	@GetMapping(value = "/fullsearch")
+	public ResponseEntity<List<PostDTO>> fullSearch(
+			@RequestParam(value = "text", defaultValue = StringUtils.EMPTY) String text,
+			@RequestParam(value = "minDate", defaultValue = StringUtils.EMPTY) String minDate,
+			@RequestParam(value = "maxDate", defaultValue = StringUtils.EMPTY) String maxDate) {
+		text = URL.decodeParam(text);
+		LocalDateTime min = URL.convertStringToLocalDateTime(minDate);
+		LocalDateTime max = URL.convertStringToLocalDateTime(maxDate);
+		
+		List<PostDTO> posts = service.fullSearch(text, min, max);
 		return ResponseEntity.ok().body(posts);
 	}
 
