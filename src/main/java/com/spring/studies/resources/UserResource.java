@@ -18,7 +18,9 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.spring.studies.domain.Post;
 import com.spring.studies.domain.User;
+import com.spring.studies.dto.PostDTO;
 import com.spring.studies.dto.UserDTO;
+import com.spring.studies.services.PostService;
 import com.spring.studies.services.UserService;
 
 @RestController
@@ -27,6 +29,9 @@ public class UserResource {
 
 	@Autowired
 	UserService service;
+	
+	@Autowired
+	PostService postService;
 
 	@GetMapping
 	public ResponseEntity<List<UserDTO>> findAll() {
@@ -70,5 +75,17 @@ public class UserResource {
 	public ResponseEntity<List<Post>> findPostByUser(@PathVariable String id) {
 		User user = service.findById(id);
 		return ResponseEntity.ok(user.getPosts());
+	}
+	
+	@PostMapping(value = "/{id}/posts")
+	public ResponseEntity<List<Post>> insertPostByUser(@PathVariable String id, @RequestBody PostDTO postDTO) {
+		User user = service.findById(id);
+		Post newPost = postService.fromDTO(postDTO);
+		newPost = postService.insert(newPost);
+		user.setId(id);
+		user.getPosts().add(newPost);
+		service.update(user);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}/posts/{idPost}").buildAndExpand(user.getId(), newPost.getId()).toUri();
+		return ResponseEntity.created(uri).build();
 	}
 }

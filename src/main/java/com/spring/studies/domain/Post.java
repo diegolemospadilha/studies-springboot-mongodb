@@ -8,7 +8,6 @@ import java.util.List;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import com.spring.studies.dto.AuthorDTO;
 import com.spring.studies.dto.CommentDTO;
 
 import lombok.AllArgsConstructor;
@@ -38,17 +37,14 @@ public class Post implements Serializable {
 	
 	private String body;
 	
-	private AuthorDTO author;
-	
 	private List<CommentDTO> comments = new ArrayList<CommentDTO>();
 
-	public Post(String id, LocalDateTime date, String title, String body, AuthorDTO author) {
+	public Post(String id, LocalDateTime date, String title, String body) {
 		super();
 		this.id = id;
 		this.date = date;
 		this.title = title;
 		this.body = body;
-		this.author = author;
 	}
 	
 }

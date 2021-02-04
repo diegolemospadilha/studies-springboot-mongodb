@@ -52,6 +52,7 @@ public class UserService {
 	private void updateData(User newObj, User obj) {
 		newObj.setName(obj.getName());
 		newObj.setEmail(obj.getEmail());
+		newObj.setPosts(obj.getPosts());
 	}
 
 	public User fromDTO(UserDTO objDTO) {

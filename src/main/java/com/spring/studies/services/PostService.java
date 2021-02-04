@@ -69,6 +69,7 @@ public class PostService {
 	}
 
 	public Post fromDTO(PostDTO objDTO) {
+		objDTO.setDate(LocalDateTime.now());
 		return this.modelMapper.map(objDTO, Post.class);
 	}
 	
