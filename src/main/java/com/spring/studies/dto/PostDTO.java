@@ -22,7 +22,7 @@ public class PostDTO implements Serializable {
 
 	private String id;
 
-	private LocalDateTime date;
+	private LocalDateTime lastUpdateDate;
 
 	private String title;
 

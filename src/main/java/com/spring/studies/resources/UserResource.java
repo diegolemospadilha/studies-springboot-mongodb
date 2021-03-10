@@ -88,4 +88,14 @@ public class UserResource {
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}/posts/{idPost}").buildAndExpand(user.getId(), newPost.getId()).toUri();
 		return ResponseEntity.created(uri).build();
 	}
+	
+	@PutMapping(value = "/{id}/posts/{idPost}")
+	public ResponseEntity<List<Post>> updatePostByUser(@PathVariable String id, @PathVariable String idPost, @RequestBody PostDTO postDTO) {
+		User user = service.findById(id);
+		Post post = postService.fromDTO(postDTO);
+		user.setId(id);
+		post.setId(idPost);
+		postService.update(post);
+		return ResponseEntity.noContent().build();
+	}
 }

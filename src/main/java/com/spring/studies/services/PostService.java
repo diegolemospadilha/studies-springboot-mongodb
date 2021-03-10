@@ -64,12 +64,12 @@ public class PostService {
 	private void updateData(Post newObj, Post obj) {
 		newObj.setTitle(obj.getTitle());
 		newObj.setBody(obj.getBody());
-		newObj.setDate(obj.getDate());
+		newObj.setLastUpdateDate(obj.getLastUpdateDate());
 
 	}
 
 	public Post fromDTO(PostDTO objDTO) {
-		objDTO.setDate(LocalDateTime.now());
+		objDTO.setLastUpdateDate(LocalDateTime.now());
 		return this.modelMapper.map(objDTO, Post.class);
 	}
 	

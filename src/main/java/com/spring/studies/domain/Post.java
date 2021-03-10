@@ -31,7 +31,7 @@ public class Post implements Serializable {
 	@Id
 	private String id;
 	
-	private LocalDateTime date;
+	private LocalDateTime lastUpdateDate;
 	
 	private String title;
 	
@@ -42,7 +42,7 @@ public class Post implements Serializable {
 	public Post(String id, LocalDateTime date, String title, String body) {
 		super();
 		this.id = id;
-		this.date = date;
+		this.lastUpdateDate = date;
 		this.title = title;
 		this.body = body;
 	}
